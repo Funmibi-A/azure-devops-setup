@@ -28,3 +28,15 @@ steps:
   - script: |
       python -m pytest -v
     displayName: 'Run automated tests'
+
+  - script: |
+      mkdir -p "$(Build.ArtifactStagingDirectory)/python-app"
+      cp app.py requirements.txt README.md "$(Build.ArtifactStagingDirectory)/python-app/"
+    displayName: 'Prepare application artifact'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/python-app'
+      artifact: 'python-app'
+      publishLocation: 'pipeline'
+    displayName: 'Publish Python application artifact'
